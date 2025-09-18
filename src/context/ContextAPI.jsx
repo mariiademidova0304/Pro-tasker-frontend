@@ -1,12 +1,12 @@
 import { createContext, useState, useMemo, useEffect } from "react";
 
-export const currentUserContext = createContext({
+export const CurrentUserContext = createContext({
     jwt: null,
     login: () => { },
     logout: () => { }
 });
 
-export function currentUserProvider({ children }) {
+export function CurrentUserProvider({ children }) {
     const [jwt, setJwt] = useState(() => {
         const jwtFromStorage = JSON.parse(localStorage.getItem('jwt'));
         return jwtFromStorage ? jwtFromStorage : null;
@@ -48,9 +48,9 @@ export function currentUserProvider({ children }) {
     const jwtValue = useMemo(() => ({ jwt, login, logout, error, loading }), [jwt, error, loading]);
 
     return (
-        <currentUserContext.Provider value={jwtValue}>
+        <CurrentUserContext.Provider value={jwtValue}>
             {children}
-        </currentUserContext.Provider>
+        </CurrentUserContext.Provider>
     )
 }
 
