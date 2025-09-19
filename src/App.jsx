@@ -1,17 +1,42 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import { useContext } from 'react'
-import { CurrentUserContext } from './context/ContextAPI'
-import LoginPage from './components/pages/loginPage'
+import { useState } from 'react';
+import './App.css';
+import { useContext } from 'react';
+import { CurrentUserContext } from './context/ContextAPI';
+import LoginPage from './components/pages/loginPage';
+import DashBoardPage from './components/pages/DashboardPage';
+import Nav from 'react-bootstrap/Nav';
+import { Route, Routes } from 'react-router-dom';
 
 function App() {
   const { jwt, login, logout, error, loading } = useContext(CurrentUserContext);
 
+  const NotFoundPage = () => <h2>404 - Page Not Found</h2>;
+  const HomePage = () => (
+    <div>
+      <Nav defaultActiveKey="/" as="ul">
+      <Nav.Item as="li">
+        <Nav.Link href="/register">Register</Nav.Link>
+      </Nav.Item>
+      <Nav.Item as="li">
+        <Nav.Link href="/login">Login</Nav.Link>
+      </Nav.Item>
+    </Nav>
+    <h1>Welcome to Pro-tasker</h1>
+    <p>To create or see Tasks you need to be logged in</p>
+    </div>
+  )
 
   return (
-    <LoginPage/>
+    <div>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/register" element={<LoginPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/dashboard" element={<DashBoardPage />} />
+        <Route path="/dashboard/:projectID" element={<LoginPage />} />
+        <Route path="*" element={<NotFoundPage />} /> {/* Fallback for unmatched routes */}
+      </Routes>
+    </div>
   )
 }
 

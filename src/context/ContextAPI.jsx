@@ -32,9 +32,11 @@ export function CurrentUserProvider({ children }) {
             const result = await response.json();
             setJwt(result.token);
             localStorage.setItem('jwt', JSON.stringify(result.token));
+            return true;
         } catch (error) {
             console.log(error.message);
             setError(error);
+            return false;
         } finally{
             setLoading(false);
         }

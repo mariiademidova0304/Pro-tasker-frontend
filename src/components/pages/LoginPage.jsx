@@ -1,14 +1,15 @@
 import { useContext, useState } from 'react'
 import { CurrentUserContext } from '../../context/ContextAPI';
+import { useNavigate } from 'react-router-dom';
 
 export default function LoginPage() {
-    const { jwt, login, logout, error, loading } = useContext(CurrentUserContext);
+    const { jwt, login, error, loading } = useContext(CurrentUserContext);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [submitError, setSubmitError] = useState('');
-
+    const navigate = useNavigate();
 
     const handleEmailChange = (event) => {
         setEmail((event.target.value).trim());
@@ -45,10 +46,15 @@ export default function LoginPage() {
         }
     }
 
-    const handleSubmitForm = (event) => {
+    const handleSubmitForm = async (event) => {
         event.preventDefault();
         if(validateEmail() && validatePassword()){
-            login(email, password);
+            const loggedIn = await login(email, password);
+            if(loggedIn){
+                navigate('/dashboard');
+            } else{
+                setSubmitError('Password or username is invalid');
+            }
         } else{
             setSubmitError('Please, check the fields for errors');
         }
@@ -87,9 +93,6 @@ export default function LoginPage() {
                 {/**currently not seeing this line at all, default validation works first */}
                  {submitError && <p style={{ color: 'red' }}>{submitError}</p>}
             </form>
-            <p>
-                Current JWT: {jwt}
-            </p>
         </div>
     )
 }
