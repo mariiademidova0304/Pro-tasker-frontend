@@ -37,7 +37,7 @@ export default function LoginPage() {
         if (password.trim() === '') {
             setPasswordError("Password field can not be empty");
             return false;
-        } else if(password.length <= 8){
+        } else if(password.length < 8){
             setPasswordError("Password must be at least 8 symbols");
             return false;
         } else{
