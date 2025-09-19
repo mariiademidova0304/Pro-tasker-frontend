@@ -7,6 +7,7 @@ import DashBoardPage from './components/pages/DashboardPage';
 import Nav from 'react-bootstrap/Nav';
 import { Route, Routes } from 'react-router-dom';
 import RegisterPage from './components/pages/registerPage';
+import ProtectedRoutes from './components/ProtectedRoute';
 
 function App() {
   const { jwt, login, logout, error, loading } = useContext(CurrentUserContext);
@@ -33,8 +34,12 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
+
+        <Route element={< ProtectedRoutes/>}>
         <Route path="/dashboard" element={<DashBoardPage />} />
         <Route path="/dashboard/:projectID" element={<LoginPage />} />
+        </Route>
+        
         <Route path="*" element={<NotFoundPage />} /> {/* Fallback for unmatched routes */}
       </Routes>
     </div>

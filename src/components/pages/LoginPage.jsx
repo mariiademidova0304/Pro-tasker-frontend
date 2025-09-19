@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react'
 import { CurrentUserContext } from '../../context/ContextAPI';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 
 export default function LoginPage() {
     const { jwt, login, error, loading } = useContext(CurrentUserContext);
@@ -10,6 +10,10 @@ export default function LoginPage() {
     const [passwordError, setPasswordError] = useState('');
     const [submitError, setSubmitError] = useState('');
     const navigate = useNavigate();
+
+    if (jwt) {
+        return <Navigate to='/dashboard' replace />
+    }
 
     const handleEmailChange = (event) => {
         setEmail((event.target.value).trim());
@@ -33,14 +37,14 @@ export default function LoginPage() {
         setPassword(event.target.value);
     }
 
-     const validatePassword = () => {
+    const validatePassword = () => {
         if (password.trim() === '') {
             setPasswordError("Password field can not be empty");
             return false;
-        } else if(password.length < 8){
+        } else if (password.length < 8) {
             setPasswordError("Password must be at least 8 symbols");
             return false;
-        } else{
+        } else {
             setPasswordError('');
             return true;
         }
@@ -48,14 +52,14 @@ export default function LoginPage() {
 
     const handleSubmitForm = async (event) => {
         event.preventDefault();
-        if(validateEmail() && validatePassword()){
+        if (validateEmail() && validatePassword()) {
             const loggedIn = await login(email, password);
-            if(loggedIn){
+            if (loggedIn) {
                 navigate('/dashboard');
-            } else{
+            } else {
                 setSubmitError('Password or username is invalid');
             }
-        } else{
+        } else {
             setSubmitError('Please, check the fields for errors');
         }
     }
@@ -91,9 +95,9 @@ export default function LoginPage() {
                 </div>
                 <button type='submit'>Login</button>
                 {/**currently not seeing this line at all, default validation works first */}
-                 {submitError && <p style={{ color: 'red' }}>{submitError}</p>}
-                 {loading && <p style={{ color: 'blue' }}>Loading...</p>}
-                 {error && <p style={{ color: 'red' }}>{error.message}</p>}
+                {submitError && <p style={{ color: 'red' }}>{submitError}</p>}
+                {loading && <p style={{ color: 'blue' }}>Loading...</p>}
+                {error && <p style={{ color: 'red' }}>{error.message}</p>}
             </form>
         </div>
     )
