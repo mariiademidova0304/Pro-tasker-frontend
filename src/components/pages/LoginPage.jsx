@@ -63,7 +63,7 @@ export default function LoginPage() {
 
     return (
         <div>
-            <form onSubmit={handleSubmitForm}>
+            <form onSubmit={handleSubmitForm} noValidate>
                 <div>
                     <label htmlFor="email">Email: </label>
                     <input
@@ -92,6 +92,8 @@ export default function LoginPage() {
                 <button type='submit'>Login</button>
                 {/**currently not seeing this line at all, default validation works first */}
                  {submitError && <p style={{ color: 'red' }}>{submitError}</p>}
+                 {loading && <p style={{ color: 'blue' }}>Loading...</p>}
+                 {error && <p style={{ color: 'red' }}>{error.message}</p>}
             </form>
         </div>
     )

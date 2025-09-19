@@ -11,10 +11,12 @@ export function CurrentUserProvider({ children }) {
         const jwtFromStorage = JSON.parse(localStorage.getItem('jwt'));
         return jwtFromStorage ? jwtFromStorage : null;
     });
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
     const login = async (email, password) => {
+        setLoading(true);
+        setError(null);
         try {
             const requestOptions = {
                 method: 'POST',
@@ -35,6 +37,7 @@ export function CurrentUserProvider({ children }) {
             return true;
         } catch (error) {
             console.log(error.message);
+            setLoading(false);
             setError(error);
             return false;
         } finally{
