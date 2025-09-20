@@ -1,4 +1,5 @@
 import { createContext, useState, useMemo, useEffect } from "react";
+import { jwtDecode } from 'jwt-decode';
 
 export const CurrentUserContext = createContext({
     jwt: null,
@@ -8,9 +9,25 @@ export const CurrentUserContext = createContext({
 });
 
 export function CurrentUserProvider({ children }) {
+    const isJwtExpired = (jwt) => {
+        try {
+            const decodedJWT = jwtDecode(jwt);
+            const currentTime = Date.now() / 1000;
+            return decodedJWT.exp < currentTime;
+        } catch (error) {
+            console.error('Error decoding token:', error);
+            return true;
+        }
+    }
+    
     const [jwt, setJwt] = useState(() => {
         const jwtFromStorage = JSON.parse(localStorage.getItem('jwt'));
-        return jwtFromStorage ? jwtFromStorage : null;
+        if(jwtFromStorage){
+           return isJwtExpired(jwtFromStorage) ? null : jwtFromStorage
+        } else {
+            return null;
+        }
+        // return jwtFromStorage ? jwtFromStorage : null;
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -42,16 +59,16 @@ export function CurrentUserProvider({ children }) {
             setLoading(false);
         }
     }
-    
+
     const login = async (email, password) => {
         setLoading(true);
         setError(null);
         try {
             const requestOptions = {
                 method: 'POST',
-                headers: {'Content-Type': 'application/json'},
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    'email' : email,
+                    'email': email,
                     'password': password
                 })
             }
@@ -69,7 +86,7 @@ export function CurrentUserProvider({ children }) {
             setLoading(false);
             setError(error);
             return false;
-        } finally{
+        } finally {
             setLoading(false);
         }
     }
@@ -78,6 +95,20 @@ export function CurrentUserProvider({ children }) {
         setJwt(null);
         localStorage.removeItem('jwt');
     }
+
+    useEffect(()=> {
+        if(!jwt) return;
+
+        const decodedJwt = jwtDecode(jwt);
+        const expirationTime = decodedJwt.exp * 1000;
+        const timeTillExp = expirationTime - Date.now();
+
+        const timer = setTimeout(() => {
+            logout();
+        }, timeTillExp);
+
+        return () => clearTimeout(timer);
+    }, [jwt])
 
     const jwtValue = useMemo(() => ({ jwt, login, logout, register, error, loading }), [jwt, error, loading]);
 
