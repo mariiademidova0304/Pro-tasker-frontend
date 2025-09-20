@@ -37,7 +37,7 @@ export default function TaskItem({task, onStatusChange, onDelete}) {
             <div style={{display: 'flex', justifyContent:'flex-end',height:'fit-content'}}>
                 <select value={task.status} onChange={handleStatusChange}>
                     <option value='To do'>To Do</option>
-                    <option value='In Progress'>In Progress</option>
+                    <option value='In progress'>In Progress</option>
                     <option value='Done'>Done</option>
                 </select>
                 <button onClick={deleteTask}>Delete</button>
