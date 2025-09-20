@@ -10,6 +10,9 @@ export default function ProjectDetailsPage() {
     const [updateError, setUpdateError] = useState(null);
     const [deleteError, setDeleteError] = useState(null);
     const { jwt } = useContext(CurrentUserContext);
+    const [editMode, setEditMode] = useState(false);
+    const [editedName, setEditedName] = useState('');
+    const [editedDescription, setEditedDescription] = useState('');
 
     //using hook multiple times to avoid the same name we use aliasing
     const { apiData: project, loading: projectLoading, error: projectError } = useFetchAPI(`${import.meta.env.VITE_SERVER_ORIGIN}/api/projects/${projectID}`);
@@ -21,6 +24,13 @@ export default function ProjectDetailsPage() {
             setDisplayingTasks(tasks);
         }
     }, [tasks])
+
+    useEffect(() => {
+        if(project) {
+            setEditedName(project.name);
+            setEditedDescription(project.description);
+        }
+    }, [project]);
 
     if (projectLoading || tasksLoading) return <p>Loading ...</p>
     if (projectError) return <p>Error: {projectError.message}</p>;
@@ -59,14 +69,14 @@ export default function ProjectDetailsPage() {
             }
             const updatedTasks = await responseUpdTasks.json();
             setDisplayingTasks(updatedTasks);
-        }catch(error){
+        } catch (error) {
             setUpdateError(error);
-        }   
+        }
     }
     //filtering to a new array that doesn't include a task with delete id 
     const deleteTask = async (taskId) => {
         setDeleteError(null);
-       try {
+        try {
             const requestOptions = {
                 method: 'DELETE',
                 headers: {
@@ -92,19 +102,75 @@ export default function ProjectDetailsPage() {
             }
             const updatedTasks = await responseUpdTasks.json();
             setDisplayingTasks(updatedTasks);
-        }catch(error){
+        } catch (error) {
             setDeleteError(error);
-        }   
+        }
+    }
+
+    const handleSave = async() => {
+        setUpdateError(null);
+        try {
+            const requestOptions = {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${jwt}`
+                },
+                body: JSON.stringify({
+                    'name': editedName,
+                    'description': editedDescription
+                })
+            }
+            const response = await fetch(`${import.meta.env.VITE_SERVER_ORIGIN}/api/projects/${projectID}`, requestOptions);
+            if (!response.ok) {
+                throw new Error(`Error! Status: ${response.status}`);
+            }
+            const updProject = await response.json();
+            setEditedName(updProject.name);
+            setEditedDescription(updProject.description);
+            setEditMode(false);
+            return true;
+        } catch (error) {
+            setUpdateError(error);
+            setEditMode(false);
+        }
+    }
+
+    const handleCancel = () => {
+        setEditedName(project.name);
+        setEditedDescription(project.description);
+        setEditMode(false);
     }
 
 
     return (
         <>
-            <h1>{project.name}</h1>
-            <p>{project.description}</p>
-            {displayingTasks.length > 0 ? <TaskList tasks={displayingTasks} 
-            onStatusChange={changeTaskStatus}
-            onDelete={deleteTask}/> : <p>No tasks found</p>}
+            {editMode ? (<div>
+                <input
+                    type="text"
+                    id="name"
+                    value={editedName}
+                    onChange={(event) => setEditedName(event.target.value)}
+                    required
+                />
+                <input
+                    type="text"
+                    id="description"
+                    value={editedDescription}
+                    onChange={(event) => setEditedDescription(event.target.value)}
+                    required
+                />
+                <button onClick={handleSave}>Save Changes</button>
+                <button onClick={handleCancel}>Cancel</button>
+            </div>) : (<div>
+                <h1>{editedName}</h1>
+                <p>{editedDescription}</p>
+                <button onClick={() => setEditMode(true)}>Edit Project</button>
+            </div>)}
+
+            {displayingTasks.length > 0 ? <TaskList tasks={displayingTasks}
+                onStatusChange={changeTaskStatus}
+                onDelete={deleteTask} /> : <p>No tasks found</p>}
             {updateError && <p style={{ color: 'red' }}>{updateError.message}</p>}
             {deleteError && <p style={{ color: 'red' }}>{deleteError.message}</p>}
         </>
