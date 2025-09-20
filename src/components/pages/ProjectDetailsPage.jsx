@@ -14,6 +14,7 @@ export default function ProjectDetailsPage() {
     const [editedName, setEditedName] = useState('');
     const [editedDescription, setEditedDescription] = useState('');
 
+    ///////////////////SETTING UP PROJECT, TASKS, STATE///////////////////
     //using hook multiple times to avoid the same name we use aliasing
     const { apiData: project, loading: projectLoading, error: projectError } = useFetchAPI(`${import.meta.env.VITE_SERVER_ORIGIN}/api/projects/${projectID}`);
     const { apiData: tasks, loading: tasksLoading, error: tasksError } = useFetchAPI(`${import.meta.env.VITE_SERVER_ORIGIN}/api/projects/${projectID}/tasks`)
@@ -26,7 +27,7 @@ export default function ProjectDetailsPage() {
     }, [tasks])
 
     useEffect(() => {
-        if(project) {
+        if (project) {
             setEditedName(project.name);
             setEditedDescription(project.description);
         }
@@ -37,6 +38,43 @@ export default function ProjectDetailsPage() {
     if (tasksError) return <p>Error: {tasksError.message}</p>;
     if (project === null) return <p>Project not found</p>
 
+    //////////////////////////////MANIPULATING PROJECT DETAILS///////////////////////////
+    const handleProjectSave = async () => {
+        setUpdateError(null);
+        try {
+            const requestOptions = {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${jwt}`
+                },
+                body: JSON.stringify({
+                    'name': editedName,
+                    'description': editedDescription
+                })
+            }
+            const response = await fetch(`${import.meta.env.VITE_SERVER_ORIGIN}/api/projects/${projectID}`, requestOptions);
+            if (!response.ok) {
+                throw new Error(`Error! Status: ${response.status}`);
+            }
+            const updProject = await response.json();
+            setEditedName(updProject.name);
+            setEditedDescription(updProject.description);
+            setEditMode(false);
+            return true;
+        } catch (error) {
+            setUpdateError(error);
+            setEditMode(false);
+        }
+    }
+
+    const handleProjectCancel = () => {
+        setEditedName(project.name);
+        setEditedDescription(project.description);
+        setEditMode(false);
+    }
+
+    ////////////////////////////////////TASKS MANIPULATION///////////////////////////////////////
     //copied this off lesson example, mapping to set a new state of the tasks where updated task has its new status
     const changeTaskStatus = async (taskId, newStatus) => {
         setUpdateError(null);
@@ -107,7 +145,7 @@ export default function ProjectDetailsPage() {
         }
     }
 
-    const handleSave = async() => {
+    const changeTaskDetails = async (taskId, editedTitle, editedDescription) => {
         setUpdateError(null);
         try {
             const requestOptions = {
@@ -117,31 +155,32 @@ export default function ProjectDetailsPage() {
                     'Authorization': `Bearer ${jwt}`
                 },
                 body: JSON.stringify({
-                    'name': editedName,
+                    'title': editedTitle,
                     'description': editedDescription
                 })
             }
-            const response = await fetch(`${import.meta.env.VITE_SERVER_ORIGIN}/api/projects/${projectID}`, requestOptions);
+            const response = await fetch(`${import.meta.env.VITE_SERVER_ORIGIN}/api/tasks/${taskId}`, requestOptions);
             if (!response.ok) {
                 throw new Error(`Error! Status: ${response.status}`);
             }
-            const updProject = await response.json();
-            setEditedName(updProject.name);
-            setEditedDescription(updProject.description);
-            setEditMode(false);
-            return true;
+
+            const responseUpdTasks = await fetch(`${import.meta.env.VITE_SERVER_ORIGIN}/api/projects/${projectID}/tasks`,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${jwt}`
+                    }
+                }
+            );
+            if (!responseUpdTasks.ok) {
+                throw new Error(`Error! Status: ${response.status}`);
+            }
+            const updatedTasks = await responseUpdTasks.json();
+            setDisplayingTasks(updatedTasks);
         } catch (error) {
             setUpdateError(error);
-            setEditMode(false);
         }
     }
-
-    const handleCancel = () => {
-        setEditedName(project.name);
-        setEditedDescription(project.description);
-        setEditMode(false);
-    }
-
 
     return (
         <>
@@ -160,8 +199,8 @@ export default function ProjectDetailsPage() {
                     onChange={(event) => setEditedDescription(event.target.value)}
                     required
                 />
-                <button onClick={handleSave}>Save Changes</button>
-                <button onClick={handleCancel}>Cancel</button>
+                <button onClick={handleProjectSave}>Save Changes</button>
+                <button onClick={handleProjectCancel}>Cancel</button>
             </div>) : (<div>
                 <h1>{editedName}</h1>
                 <p>{editedDescription}</p>
@@ -170,7 +209,8 @@ export default function ProjectDetailsPage() {
 
             {displayingTasks.length > 0 ? <TaskList tasks={displayingTasks}
                 onStatusChange={changeTaskStatus}
-                onDelete={deleteTask} /> : <p>No tasks found</p>}
+                onDelete={deleteTask}
+                onDetailsChange={changeTaskDetails} /> : <p>No tasks found</p>}
             {updateError && <p style={{ color: 'red' }}>{updateError.message}</p>}
             {deleteError && <p style={{ color: 'red' }}>{deleteError.message}</p>}
         </>
