@@ -3,6 +3,7 @@ import useFetchAPI from "../../utils/useFetchAPI";
 import TaskList from "../page-elements/tasks/TaskList";
 import { useContext, useEffect, useState } from "react";
 import { CurrentUserContext } from "../../context/ContextAPI";
+import TaskForm from "../page-elements/tasks/TaskForm";
 
 export default function ProjectDetailsPage() {
     const { projectID } = useParams();
@@ -182,8 +183,31 @@ export default function ProjectDetailsPage() {
         }
     }
 
+    /////////////////REFRESH AFTER SUBMITTING NEW TASKS/////////////////////////////////
+    const handleRefreshTasks = async () => {
+        setUpdateError(null);
+        try{
+            const responseUpdTasks = await fetch(`${import.meta.env.VITE_SERVER_ORIGIN}/api/projects/${projectID}/tasks`,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${jwt}`
+                    }
+                }
+            );
+            if (!responseUpdTasks.ok) {
+                throw new Error(`Error! Status: ${response.status}`);
+            }
+            const updatedTasks = await responseUpdTasks.json();
+            setDisplayingTasks(updatedTasks);
+        } catch(error){
+            setUpdateError(error.message)
+        } 
+    }
+
     return (
         <>
+        <TaskForm projectId={projectID} onTaskSubmitted={handleRefreshTasks}/>
             {editMode ? (<div>
                 <input
                     type="text"
