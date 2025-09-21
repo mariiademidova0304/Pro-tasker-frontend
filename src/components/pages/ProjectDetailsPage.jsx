@@ -231,7 +231,7 @@ export default function ProjectDetailsPage() {
                 <button onClick={() => setEditMode(true)}>Edit Project</button>
             </div>)}
 
-            {displayingTasks.length > 0 ? <TaskList tasks={displayingTasks}
+            {displayingTasks.length > 0 ? <TaskList tasks={displayingTasks || []}
                 onStatusChange={changeTaskStatus}
                 onDelete={deleteTask}
                 onDetailsChange={changeTaskDetails} /> : <p>No tasks found</p>}

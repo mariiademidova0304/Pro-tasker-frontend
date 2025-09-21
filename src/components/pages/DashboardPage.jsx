@@ -3,6 +3,7 @@ import { CurrentUserContext } from "../../context/ContextAPI";
 import ProjectForm from "../page-elements/projects/ProjectForm";
 import ProjectList from "../page-elements/projects/ProjectList";
 import useFetchAPI from "../../utils/useFetchAPI";
+import Button from "react-bootstrap/esm/Button";
 
 export default function DashBoardPage() {
     const { jwt, logout } = useContext(CurrentUserContext);
@@ -79,7 +80,7 @@ export default function DashBoardPage() {
             <ProjectList projects={displayingProjects || []} onDelete={deleteProject} />
             {refreshError && <p style={{ color: 'red' }}>{refreshError}</p>}
             {deleteError && <p style={{ color: 'red' }}>{deleteError.message}</p>}
-            <p>JWT is ${jwt}</p>
+            <Button onClick={() => logout()}>Sign Out</Button>
         </div>
     )
 }
