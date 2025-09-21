@@ -1,18 +1,3 @@
-
-//const taskSchema = new Schema({
-//     title: String,
-//     description: String,
-//     status: {
-//                 enum: ['To do', 'In progress', 'Done']
-//     },
-//     dueDate: Date,
-//     project: {
-//         type: Schema.Types.ObjectId,
-//         ref: 'Project',
-//         required: true
-//     }
-// });
-
 import { useState } from "react";
 
 

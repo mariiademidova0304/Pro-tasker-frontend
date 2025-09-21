@@ -4,7 +4,7 @@ import { CurrentUserContext } from "../../../context/ContextAPI";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
-export default function ProjectForm() {
+export default function ProjectForm({onProjectSubmit}) {
 
     const initialState = {
         name: '',
@@ -68,7 +68,7 @@ export default function ProjectForm() {
             if (!response.ok) {
                 throw new Error(`Error! Status: ${response.status}`);
             }
-            // onTaskSubmitted();
+            onProjectSubmit();
             setInputFormData(initialState);
             return true;
         } catch (error) {
@@ -85,7 +85,7 @@ export default function ProjectForm() {
     return (
         <Form onSubmit={handleSubmit} noValidate>
             <Form.Group>
-                <label htmlFor="project-name">Task</label>
+                <label htmlFor="project-name">Project</label>
                 <input value={inputFormData.name} type="text" name="name" id="project-name" onChange={handleChange} required />
             </Form.Group>
             <Form.Group>
@@ -93,7 +93,7 @@ export default function ProjectForm() {
                 <input value={inputFormData.description} type="text" name="description" id="project-description" onChange={handleChange} required />
             </Form.Group>
             <Form.Group>
-                <Button type="submit">Add Task</Button>
+                <Button type="submit">Add Project</Button>
                 {loading && <p style={{ color: 'blue' }}>Loading...</p>}
                 {error && <p style={{ color: 'red' }}>{error.message}</p>}
                 {nameError && <p style={{ color: 'red' }}>{nameError}</p>}
