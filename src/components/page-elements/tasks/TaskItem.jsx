@@ -4,7 +4,7 @@ import Button from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Form from 'react-bootstrap/Form';
 
-
+//task item component that gets tasks from parent and callbacks for the parent to do something
 export default function TaskItem({ task, onStatusChange, onDelete, onDetailsChange }) {
     const [editMode, setEditMode] = useState(false);
     const [editedTitle, setEditedTitle] = useState(task.title);

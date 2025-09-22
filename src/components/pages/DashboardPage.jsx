@@ -6,17 +6,21 @@ import useFetchAPI from "../../utils/useFetchAPI";
 import LogoutButton from "../page-elements/LogoutButton";
 import NavigateBackButton from "../page-elements/NavigateBackButton";
 
+//getting jwt from context, setting state for displayed projects, using custom hook to fetch data
+//setting errors for different actions
 export default function DashBoardPage() {
-    const { jwt, logout } = useContext(CurrentUserContext);
+    const { jwt } = useContext(CurrentUserContext);
     const [displayingProjects, setDisplayingProjects] = useState([])
     const { apiData: projects, loading: projectsLoading, error: projectsError } = useFetchAPI(`${import.meta.env.VITE_SERVER_ORIGIN}/api/projects`)
     const [refreshError, setRefreshError] = useState(null);
     const [deleteError, setDeleteError] = useState(null);
 
+    //setting state for displayed projects dependent on when projects render from custom fetch hook
     useEffect(() => {
         setDisplayingProjects(projects);
     }, [projects])
 
+    //deleting a project, calling refresh of projects from backend and updating displayed projects
     const deleteProject = async (projectId) => {
         setDeleteError(null);
         try {
@@ -51,6 +55,8 @@ export default function DashBoardPage() {
     }
 
     /////////////////REFRESH AFTER SUBMITTING NEW PROJECT/////////////////////////////////
+    //refresh of projects - calling fetch after a new project was added so displayed 
+    //projects always represent backend data
     const handleRefresh = async () => {
         setRefreshError(null);
         try {

@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { CurrentUserContext } from "../../context/ContextAPI";
 import { useNavigate } from "react-router-dom";
 
+//a button that handles logout and navigates to / page
 export default function LogoutButton(){
     const navigate = useNavigate();
     const { logout } = useContext(CurrentUserContext);

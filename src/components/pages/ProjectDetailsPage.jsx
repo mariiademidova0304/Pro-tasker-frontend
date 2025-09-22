@@ -11,6 +11,8 @@ import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import ListGroup from 'react-bootstrap/ListGroup';
 
+//getting id from page parameters, setting states from displayed tasks, specific errors,
+//getting jwt from context, setting state for editing 
 export default function ProjectDetailsPage() {
     const { projectID } = useParams();
     const [displayingTasks, setDisplayingTasks] = useState([]);
@@ -33,6 +35,7 @@ export default function ProjectDetailsPage() {
         }
     }, [tasks])
 
+    //setting state for future editing after project is fetched
     useEffect(() => {
         if (project) {
             setEditedName(project.name);
@@ -46,6 +49,8 @@ export default function ProjectDetailsPage() {
     if (project === null) return <p>Project not found</p>
 
     //////////////////////////////MANIPULATING PROJECT DETAILS///////////////////////////
+    //sending post request and refreshing project details with a new fetch
+    //setting editing state to an updated project details
     const handleProjectSave = async () => {
         setUpdateError(null);
         try {
@@ -75,6 +80,8 @@ export default function ProjectDetailsPage() {
         }
     }
 
+    //cancel editing changes, calling fetch to update editing state so the state is always up
+    //to date with backend
     const handleProjectCancel = async () => {
         try {
             const responseUpdProject = await fetch(`${import.meta.env.VITE_SERVER_ORIGIN}/api/projects/${projectID}`,
@@ -99,7 +106,7 @@ export default function ProjectDetailsPage() {
     }
 
     ////////////////////////////////////TASKS MANIPULATION///////////////////////////////////////
-    //copied this off lesson example, mapping to set a new state of the tasks where updated task has its new status
+    //re-used function from a previous project, added fetches and state updates
     const changeTaskStatus = async (taskId, newStatus) => {
         setUpdateError(null);
         try {
@@ -135,7 +142,7 @@ export default function ProjectDetailsPage() {
             setUpdateError(error);
         }
     }
-    //filtering to a new array that doesn't include a task with delete id 
+    //deleting task, calling fetch to set displayed tasks state up to date with backend
     const deleteTask = async (taskId) => {
         setDeleteError(null);
         try {
@@ -169,6 +176,7 @@ export default function ProjectDetailsPage() {
         }
     }
 
+    //could probably organize it together with task status change
     const changeTaskDetails = async (taskId, editedTitle, editedDescription) => {
         setUpdateError(null);
         try {
@@ -207,6 +215,7 @@ export default function ProjectDetailsPage() {
     }
 
     /////////////////REFRESH AFTER SUBMITTING NEW TASKS/////////////////////////////////
+    //fetching tasks after a new task has been added to the backend
     const handleRefreshTasks = async () => {
         setUpdateError(null);
         try {

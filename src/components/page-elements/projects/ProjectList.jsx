@@ -1,5 +1,6 @@
 import ProjectItem from "./ProjectItem";
 
+//same as Task List
 export default function ProjectList({projects, onDelete}){
        
     const projectList = projects.map((project) =>

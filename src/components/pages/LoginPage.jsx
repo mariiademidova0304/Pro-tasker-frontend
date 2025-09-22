@@ -5,6 +5,8 @@ import NavigateBackButton from '../page-elements/NavigateBackButton';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
+//getting jwt from context, as well as loading state and login function
+//not using error as custom error was made for that
 export default function LoginPage() {
     const { jwt, login, error, loading } = useContext(CurrentUserContext);
     const [email, setEmail] = useState('');
@@ -14,6 +16,7 @@ export default function LoginPage() {
     const [submitError, setSubmitError] = useState('');
     const navigate = useNavigate();
 
+    //navigating to dashboard if jwt is already created
     if (jwt) {
         return <Navigate to='/dashboard' replace />
     }
@@ -22,6 +25,7 @@ export default function LoginPage() {
         setEmail(event.target.value);
     }
 
+    //validating email for match and empty input
     const validateEmail = () => {
         if (email.trim() === '') {
             setEmailError("Email field can not be empty");
@@ -40,6 +44,7 @@ export default function LoginPage() {
         setPassword(event.target.value);
     }
 
+    //validating password for empty input and length
     const validatePassword = () => {
         if (password.trim() === '') {
             setPasswordError("Password field can not be empty");
@@ -53,6 +58,8 @@ export default function LoginPage() {
         }
     }
 
+    //validating on submit, logging in and navigating to /dashboard
+    //handling errors with error states
     const handleSubmitForm = async (event) => {
         event.preventDefault();
         if (validateEmail() && validatePassword()) {

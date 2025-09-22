@@ -4,6 +4,8 @@ import { CurrentUserContext } from "../../../context/ContextAPI";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
+//repeating logic from Task Form
+//see logic explanations there
 export default function ProjectForm({onProjectSubmit}) {
 
     const initialState = {

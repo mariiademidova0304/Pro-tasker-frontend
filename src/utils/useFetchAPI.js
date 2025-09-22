@@ -10,7 +10,7 @@ export default function useFetchAPI(url) {
     const { jwt } = useContext(CurrentUserContext);
 
     useEffect(() => {
-        //if url is not full yet don't do anything to nit get errors
+        //if url is not full yet don't do anything to not get errors
         if (!url) return;
 
         const controller = new AbortController;

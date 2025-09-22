@@ -1,6 +1,7 @@
 import { createContext, useState, useMemo, useEffect } from "react";
 import { jwtDecode } from 'jwt-decode';
 
+//creating context to be able to use jwt, login, logout and register across different components
 export const CurrentUserContext = createContext({
     jwt: null,
     login: () => { },
@@ -9,6 +10,7 @@ export const CurrentUserContext = createContext({
 });
 
 export function CurrentUserProvider({ children }) {
+//function checks whether token has already expired
     const isJwtExpired = (jwt) => {
         try {
             const decodedJWT = jwtDecode(jwt);
@@ -20,6 +22,9 @@ export function CurrentUserProvider({ children }) {
         }
     }
     
+//setting up jwt state, trying to get it from localstorage and checking whether it's expired or not, 
+// if expired - setting it to null
+//is probably useless since i have automatic logout that removes expired jwt from localStorage
     const [jwt, setJwt] = useState(() => {
         const jwtFromStorage = JSON.parse(localStorage.getItem('jwt'));
         if(jwtFromStorage){
@@ -27,7 +32,6 @@ export function CurrentUserProvider({ children }) {
         } else {
             return null;
         }
-        // return jwtFromStorage ? jwtFromStorage : null;
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -45,7 +49,6 @@ export function CurrentUserProvider({ children }) {
                     'password': password
                 })
             }
-            //setting up a signal that, when cleanup suddenly runs on updated url, controller cancels this request
             const response = await fetch(`${import.meta.env.VITE_SERVER_ORIGIN}/api/users/register`, requestOptions);
             if (!response.ok) {
                 throw new Error(`Error! Status: ${response.status}`);
@@ -72,7 +75,6 @@ export function CurrentUserProvider({ children }) {
                     'password': password
                 })
             }
-            //setting up a signal that, when cleanup suddenly runs on updated url, controller cancels this request
             const response = await fetch(`${import.meta.env.VITE_SERVER_ORIGIN}/api/users/login`, requestOptions);
             if (!response.ok) {
                 throw new Error(`Error! Could not get response due to: ${response.status}`)
@@ -96,6 +98,8 @@ export function CurrentUserProvider({ children }) {
         localStorage.removeItem('jwt');
     }
 
+    //setting automatic logout on token expiration: when token gets created, we check it's expiration time,
+    //then count time left till the token is expired and set timer that will run logout when the time comes
     useEffect(()=> {
         if(!jwt) return;
 

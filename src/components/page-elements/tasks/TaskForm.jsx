@@ -4,6 +4,7 @@ import { CurrentUserContext } from "../../../context/ContextAPI";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
+//input form for tasks,
 export default function TaskForm({ projectId, onTaskSubmitted }) {
 
     const initialState = {
@@ -21,7 +22,7 @@ export default function TaskForm({ projectId, onTaskSubmitted }) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    //creating handler for changes, using union type since my fields are either input or select
+    //handling input, removing previous erros, functionally updating input data
     const handleChange = (event) => {
         const { name, value } = event.target;
         if(event.target.name === 'title'){
@@ -33,7 +34,7 @@ export default function TaskForm({ projectId, onTaskSubmitted }) {
         if(event.target.name === 'dueDate'){
             setDueDateError(null);
         }
-        //not entirely understanding, but we should be updating the state based off where change was done
+        //updating the state based off where change was done
         //then linking name to the name in the state and changing value
         setInputFormData(prevInputFormData => ({
             ...prevInputFormData,
@@ -41,7 +42,7 @@ export default function TaskForm({ projectId, onTaskSubmitted }) {
         }))
     }
 
-    //sending state to parent with function prop, created in the index.ts and imported here
+    //accepting input data, checking it's not empty, setting errors for empty inputs
     const handleSubmit = async (event) => {
         event.preventDefault();
         setLoading(true);
@@ -81,6 +82,7 @@ export default function TaskForm({ projectId, onTaskSubmitted }) {
             if (!response.ok) {
                 throw new Error(`Error! Status: ${response.status}`);
             }
+            //running function so the parent will be able to refresh tasks - getting everything from backend
             onTaskSubmitted();
             setInputFormData(initialState);
             return true;

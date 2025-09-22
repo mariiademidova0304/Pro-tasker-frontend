@@ -9,19 +9,19 @@ import { Route, Routes } from 'react-router-dom';
 import RegisterPage from './components/pages/RegisterPage';
 import ProtectedRoutes from './components/ProtectedRoute';
 import ProjectDetailsPage from './components/pages/ProjectDetailsPage';
+import { NavLink } from 'react-router-dom';
 
 function App() {
-  const { jwt, login, logout, error, loading } = useContext(CurrentUserContext);
 
   const NotFoundPage = () => <h2>404 - Page Not Found</h2>;
   const HomePage = () => (
     <div>
       <Nav defaultActiveKey="/" as="ul">
       <Nav.Item as="li">
-        <Nav.Link href="/register">Register</Nav.Link>
+        <Nav.Link as={NavLink} to="/register">Register</Nav.Link>
       </Nav.Item>
       <Nav.Item as="li">
-        <Nav.Link href="/login">Login</Nav.Link>
+        <Nav.Link as={NavLink} to="/login">Login</Nav.Link>
       </Nav.Item>
     </Nav>
     <h1>Welcome to Pro-tasker</h1>

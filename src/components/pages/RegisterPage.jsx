@@ -5,6 +5,7 @@ import NavigateBackButton from '../page-elements/NavigateBackButton';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
+//almost the same as login page but after submit it's calling login function from context
 export default function RegisterPage() {
     const { jwt, login, register, error, loading } = useContext(CurrentUserContext);
     const [username, setUsername] = useState('');
