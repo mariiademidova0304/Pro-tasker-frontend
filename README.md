@@ -40,6 +40,10 @@ API routes:
 /api/tasks/:id - PUT update a task by ID
 /api/tasks/:id - DELETE a task by ID
 
+# Deployed links
+Backend: https://pro-tasker-backend-ih46.onrender.com
+Frontend: https://pro-tasker-frontend-o7ub.onrender.com/
+
 # Resources
 Previous labs and SBA work has been reused and tweaked, as well as course materials.
 
