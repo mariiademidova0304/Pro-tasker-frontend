@@ -58,7 +58,7 @@ const [editedDescription, setEditedDescription] = useState(task.description);
                 <p>{task.title}</p>
                 <p>{task.description}</p>
                 <div>
-                    <span>Due date: {task.dueDate}</span>
+                    <span>Due date: {new Date(task.dueDate).toISOString().substring(0, 10)}</span>
                 </div>
             </div>
             <div style={{display: 'flex', justifyContent:'flex-end',height:'fit-content'}}>

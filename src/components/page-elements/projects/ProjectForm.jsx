@@ -41,7 +41,7 @@ export default function ProjectForm({onProjectSubmit}) {
         setLoading(true);
         setError(null);
         if (inputFormData.name.trim() === '') {
-            setTitleError('Name can not be empty');
+            setNameError('Name can not be empty');
             setLoading(false);
             return false;
         }

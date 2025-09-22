@@ -4,7 +4,8 @@ import TaskList from "../page-elements/tasks/TaskList";
 import { useContext, useEffect, useState } from "react";
 import { CurrentUserContext } from "../../context/ContextAPI";
 import TaskForm from "../page-elements/tasks/TaskForm";
-import LogoutButton from "../LogoutButton";
+import LogoutButton from "../page-elements/LogoutButton";
+import NavigateBackButton from "../page-elements/NavigateBackButton";
 
 export default function ProjectDetailsPage() {
     const { projectID } = useParams();
@@ -225,7 +226,6 @@ export default function ProjectDetailsPage() {
 
     return (
         <>
-            <LogoutButton />
             <TaskForm projectId={projectID} onTaskSubmitted={handleRefreshTasks} />
             {editMode ? (<div>
                 <input
@@ -256,6 +256,9 @@ export default function ProjectDetailsPage() {
                 onDetailsChange={changeTaskDetails} /> : <p>No tasks found</p>}
             {updateError && <p style={{ color: 'red' }}>{updateError.message}</p>}
             {deleteError && <p style={{ color: 'red' }}>{deleteError.message}</p>}
+            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px' }}>
+                <LogoutButton /> <NavigateBackButton />
+            </div>
         </>
     )
 

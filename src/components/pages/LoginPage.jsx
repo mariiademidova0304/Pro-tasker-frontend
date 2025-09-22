@@ -1,6 +1,7 @@
 import { useContext, useState } from 'react'
 import { CurrentUserContext } from '../../context/ContextAPI';
 import { useNavigate, Navigate } from 'react-router-dom';
+import NavigateBackButton from '../page-elements/NavigateBackButton';
 
 export default function LoginPage() {
     const { jwt, login, error, loading } = useContext(CurrentUserContext);
@@ -16,7 +17,7 @@ export default function LoginPage() {
     }
 
     const handleEmailChange = (event) => {
-        setEmail((event.target.value).trim());
+        setEmail(event.target.value);
     }
 
     const validateEmail = () => {
@@ -97,8 +98,9 @@ export default function LoginPage() {
                 {/**currently not seeing this line at all, default validation works first */}
                 {submitError && <p style={{ color: 'red' }}>{submitError}</p>}
                 {loading && <p style={{ color: 'blue' }}>Loading...</p>}
-                {error && <p style={{ color: 'red' }}>{error.message}</p>}
+                {/*{error && <p style={{ color: 'red' }}>{error.message}</p>}*/}
             </form>
+            <NavigateBackButton/>
         </div>
     )
 }

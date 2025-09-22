@@ -1,6 +1,7 @@
 import { useContext, useState } from 'react'
 import { CurrentUserContext } from '../../context/ContextAPI';
 import { useNavigate, Navigate } from 'react-router-dom';
+import NavigateBackButton from '../page-elements/NavigateBackButton';
 
 export default function RegisterPage() {
     const { jwt, login, register, error, loading } = useContext(CurrentUserContext);
@@ -134,8 +135,9 @@ export default function RegisterPage() {
                 {/**currently not seeing this line at all, default validation works first */}
                 {submitError && <p style={{ color: 'red' }}>{submitError}</p>}
                 {loading && <p style={{ color: 'blue' }}>Loading...</p>}
-                {error && <p style={{ color: 'red' }}>{error.message}</p>}
+                {/* {error && <p style={{ color: 'red' }}>{error.message}</p>} */}
             </form>
+            <NavigateBackButton/>
         </div>
     )
 }
