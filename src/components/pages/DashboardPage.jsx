@@ -3,7 +3,6 @@ import { CurrentUserContext } from "../../context/ContextAPI";
 import ProjectForm from "../page-elements/projects/ProjectForm";
 import ProjectList from "../page-elements/projects/ProjectList";
 import useFetchAPI from "../../utils/useFetchAPI";
-import Button from "react-bootstrap/esm/Button";
 import LogoutButton from "../page-elements/LogoutButton";
 import NavigateBackButton from "../page-elements/NavigateBackButton";
 

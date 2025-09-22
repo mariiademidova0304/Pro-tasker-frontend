@@ -2,11 +2,11 @@ import { useState } from 'react';
 import './App.css';
 import { useContext } from 'react';
 import { CurrentUserContext } from './context/ContextAPI';
-import LoginPage from './components/pages/loginPage';
+import LoginPage from './components/pages/LoginPage';
 import DashBoardPage from './components/pages/DashboardPage';
 import Nav from 'react-bootstrap/Nav';
 import { Route, Routes } from 'react-router-dom';
-import RegisterPage from './components/pages/registerPage';
+import RegisterPage from './components/pages/RegisterPage';
 import ProtectedRoutes from './components/ProtectedRoute';
 import ProjectDetailsPage from './components/pages/ProjectDetailsPage';
 
