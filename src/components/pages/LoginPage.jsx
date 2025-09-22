@@ -2,6 +2,8 @@ import { useContext, useState } from 'react'
 import { CurrentUserContext } from '../../context/ContextAPI';
 import { useNavigate, Navigate } from 'react-router-dom';
 import NavigateBackButton from '../page-elements/NavigateBackButton';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
 export default function LoginPage() {
     const { jwt, login, error, loading } = useContext(CurrentUserContext);
@@ -68,10 +70,10 @@ export default function LoginPage() {
 
     return (
         <div>
-            <form onSubmit={handleSubmitForm} noValidate>
-                <div>
-                    <label htmlFor="email">Email: </label>
-                    <input
+            <Form onSubmit={handleSubmitForm} noValidate>
+                <Form.Group className="mb-3">
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control
                         type="email"
                         id="email"
                         value={email}
@@ -80,10 +82,10 @@ export default function LoginPage() {
                         required
                     />
                     {emailError && <p style={{ color: 'red' }}>{emailError}</p>}
-                </div>
-                <div>
-                    <label htmlFor="password">Password: </label>
-                    <input
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control
                         type="password"
                         id="password"
                         value={password}
@@ -93,14 +95,15 @@ export default function LoginPage() {
                         required
                     />
                     {passwordError && <p style={{ color: 'red' }}>{passwordError}</p>}
-                </div>
-                <button type='submit'>Login</button>
-                {/**currently not seeing this line at all, default validation works first */}
+                </Form.Group>
+                <Button type='submit'>Login</Button>
                 {submitError && <p style={{ color: 'red' }}>{submitError}</p>}
                 {loading && <p style={{ color: 'blue' }}>Loading...</p>}
                 {/*{error && <p style={{ color: 'red' }}>{error.message}</p>}*/}
-            </form>
-            <NavigateBackButton/>
+            </Form>
+            <footer className="py-3">
+            <NavigateBackButton />
+            </footer>
         </div>
     )
 }

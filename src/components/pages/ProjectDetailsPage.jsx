@@ -8,6 +8,8 @@ import LogoutButton from "../page-elements/LogoutButton";
 import NavigateBackButton from "../page-elements/NavigateBackButton";
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import Form from 'react-bootstrap/Form';
+import ListGroup from 'react-bootstrap/ListGroup';
 
 export default function ProjectDetailsPage() {
     const { projectID } = useParams();
@@ -229,24 +231,38 @@ export default function ProjectDetailsPage() {
     return (
         <>
             <TaskForm projectId={projectID} onTaskSubmitted={handleRefreshTasks} />
-            {editMode ? (<div>
-                <input
-                    type="text"
-                    id="name"
-                    value={editedName}
-                    onChange={(event) => setEditedName(event.target.value)}
-                    required
-                />
-                <input
-                    type="text"
-                    id="description"
-                    value={editedDescription}
-                    onChange={(event) => setEditedDescription(event.target.value)}
-                    required
-                />
-                <button onClick={handleProjectSave}>Save Changes</button>
-                <button onClick={handleProjectCancel}>Cancel</button>
-            </div>) : (<Card border="primary">
+            {editMode ? (<Form>
+                <Form.Group>
+                    <Form.Label>Name</Form.Label>
+                    <Form.Control
+                        type="text"
+                        id="name"
+                        value={editedName}
+                        onChange={(event) => setEditedName(event.target.value)}
+                        required
+                    />
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label>Description</Form.Label>
+                    <Form.Control
+                        type="text"
+                        id="description"
+                        value={editedDescription}
+                        onChange={(event) => setEditedDescription(event.target.value)}
+                        required
+                    />
+                </Form.Group>
+                <Form.Group>
+                    <ListGroup>
+                        <ListGroup.Item>
+                            <Button onClick={handleProjectSave}>Save Changes</Button>
+                        </ListGroup.Item>
+                        <ListGroup.Item>
+                            <Button variant="danger" onClick={handleProjectCancel}>Cancel</Button>
+                        </ListGroup.Item>
+                    </ListGroup>
+                </Form.Group>
+            </Form>) : (<Card border="primary">
                 <Card.Body>
                     <Card.Title>{editedName}</Card.Title>
                     <Card.Text>{editedDescription}</Card.Text>

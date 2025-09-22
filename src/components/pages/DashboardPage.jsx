@@ -78,6 +78,8 @@ export default function DashBoardPage() {
 
     return (
         <div>
+             <h1>Welcome!</h1>
+        <p>Now you can create projects and add tasks</p>
             <ProjectForm onProjectSubmit={handleRefresh} />
             <ProjectList projects={displayingProjects || []} onDelete={deleteProject} />
             {refreshError && <p style={{ color: 'red' }}>{refreshError}</p>}

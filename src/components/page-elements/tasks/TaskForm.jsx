@@ -100,15 +100,10 @@ export default function TaskForm({ projectId, onTaskSubmitted }) {
             <Form.Group className="mb-3">
                 <Form.Label>Task</Form.Label>
                 <Form.Control value={inputFormData.title} type="text" name="title" placeholder="Enter task name" onChange={handleChange} required/>
-
-                {/* <label htmlFor="task-title">Task</label>
-                <input value={inputFormData.title} type="text" name="title" id="task-title" onChange={handleChange} required /> */}
             </Form.Group>
             <Form.Group>
                 <Form.Label>Description</Form.Label>
                 <Form.Control value={inputFormData.description} type="text" name="description" placeholder="Enter description" onChange={handleChange} required/>
-                {/* <label htmlFor="task-description">Description</label>
-                <input value={inputFormData.description} type="text" name="description" id="task-description" onChange={handleChange} required /> */}
             </Form.Group>
             <Form.Group>
                 <Form.Label>Status</Form.Label>
@@ -121,15 +116,13 @@ export default function TaskForm({ projectId, onTaskSubmitted }) {
             <Form.Group>
                 <Form.Label>Due Date</Form.Label>
                 <Form.Control value={inputFormData.dueDate} type="date" name="dueDate" id="input-date" onChange={handleChange} required/>
-                {/* <label htmlFor="input-date">Due Date</label>
-                <input value={inputFormData.dueDate} type="date" name="dueDate" id="input-date" onChange={handleChange} required /> */}
                 {loading && <p style={{ color: 'blue' }}>Loading...</p>}
                 {error && <p style={{ color: 'red' }}>{error.message}</p>}
                 {titleError && <p style={{ color: 'red' }}>{titleError}</p>}
                 {descriptionError && <p style={{ color: 'red' }}>{descriptionError}</p>}
                 {dueDateError && <p style={{ color: 'red' }}>{dueDateError}</p>}
             </Form.Group>
-            <Button type="submit">Add Task</Button>
+            <Button className="my-3" type="submit">Add Task</Button>
         </Form>
     )
 }

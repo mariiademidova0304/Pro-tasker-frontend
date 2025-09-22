@@ -85,15 +85,19 @@ export default function ProjectForm({onProjectSubmit}) {
     return (
         <Form onSubmit={handleSubmit} noValidate>
             <Form.Group>
-                <label htmlFor="project-name">Project</label>
-                <input value={inputFormData.name} type="text" name="name" id="project-name" onChange={handleChange} required />
+                <Form.Label>Project</Form.Label>
+                <Form.Control value={inputFormData.name} type="text" name="name" placeholder="Enter project name" id="project-name" onChange={handleChange} required />
+                {/* <label htmlFor="project-name">Project</label>
+                <input value={inputFormData.name} type="text" name="name" id="project-name" onChange={handleChange} required /> */}
             </Form.Group>
             <Form.Group>
-                <label htmlFor="project-description">Description</label>
-                <input value={inputFormData.description} type="text" name="description" id="project-description" onChange={handleChange} required />
+                <Form.Label>Description</Form.Label>
+                <Form.Control value={inputFormData.description} type="text" name="description" placeholder="Enter project description" id="project-description" onChange={handleChange} required/>
+                {/* <label htmlFor="project-description">Description</label>
+                <input value={inputFormData.description} type="text" name="description" id="project-description" onChange={handleChange} required /> */}
             </Form.Group>
             <Form.Group>
-                <Button type="submit">Add Project</Button>
+                <Button className="my-3" type="submit">Add Project</Button>
                 {loading && <p style={{ color: 'blue' }}>Loading...</p>}
                 {error && <p style={{ color: 'red' }}>{error.message}</p>}
                 {nameError && <p style={{ color: 'red' }}>{nameError}</p>}

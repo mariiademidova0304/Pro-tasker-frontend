@@ -4,5 +4,5 @@ import Button from "react-bootstrap/esm/Button";
 export default function NavigateBackButton() {
  const navigate = useNavigate();
 
-    return <Button onClick={() => navigate(-1)}>Go Back</Button>
+    return <Button variant="outline-primary" onClick={() => navigate(-1)}>Go Back</Button>
 }

@@ -2,6 +2,7 @@ import { useState } from "react";
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
+import Form from 'react-bootstrap/Form';
 
 
 export default function TaskItem({ task, onStatusChange, onDelete, onDetailsChange }) {
@@ -32,31 +33,45 @@ export default function TaskItem({ task, onStatusChange, onDelete, onDetailsChan
     return (
         <main style={{ display: 'flex', justifyContent: 'space-between', padding: '10px' }}>
             {editMode ? (
-                <div>
-                    <input
-                        type="text"
-                        id="title"
-                        value={editedTitle}
-                        onChange={(event) => setEditedTitle(event.target.value)}
-                        required
-                    />
-                    <input
-                        type="text"
-                        id="description"
-                        value={editedDescription}
-                        onChange={(event) => setEditedDescription(event.target.value)}
-                        required
-                    />
-                    <div style={{ display: 'flex', justifyContent: 'flex-end', height: 'fit-content' }}>
+                <Form>
+                    <Form.Group>
+                        <Form.Label>Name</Form.Label>
+                        <Form.Control
+                            type="text"
+                            id="title"
+                            value={editedTitle}
+                            onChange={(event) => setEditedTitle(event.target.value)}
+                            required
+                        />
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>Description</Form.Label>
+                        <Form.Control
+                            type="text"
+                            id="description"
+                            value={editedDescription}
+                            onChange={(event) => setEditedDescription(event.target.value)}
+                            required
+                        />
+                    </Form.Group>
+                    <Form.Group>
                         <select value={task.status} onChange={handleStatusChange}>
                             <option value='To do'>To Do</option>
                             <option value='In progress'>In Progress</option>
                             <option value='Done'>Done</option>
                         </select>
-                    </div>
-                    <button onClick={handleDetailsChange}>Save Changes</button>
-                    <button onClick={handleCancel}>Cancel</button>
-                </div>
+                    </Form.Group>
+                    <Form.Group>
+                        <ListGroup horizontal>
+                            <ListGroup.Item>
+                                <Button onClick={handleDetailsChange}>Save Changes</Button>
+                            </ListGroup.Item>
+                            <ListGroup.Item>
+                                <Button variant="danger" onClick={handleCancel}>Cancel</Button>
+                            </ListGroup.Item>
+                        </ListGroup>
+                    </Form.Group>
+                </Form>
             ) : (<Card>
                 <Card.Body>
                     <Card.Title>{task.title}</Card.Title>

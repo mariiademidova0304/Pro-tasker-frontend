@@ -6,14 +6,13 @@ import ListGroup from 'react-bootstrap/ListGroup';
 
 
 export default function ProjectItem({ project, onDelete }) {
-    const cardWidth = window.innerWidth * 0.75;
 
     const handleDeleteProject = () => {
         onDelete(project._id);
     }
 
     return (
-        <Card style={{minWidth: `${cardWidth}`}}>
+        <Card style={{minWidth: `50rem`}}>
             <Card.Body>
                 <Card.Title>
                     <Link to={`/dashboard/${project._id}`}>

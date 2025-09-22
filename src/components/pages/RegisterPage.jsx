@@ -2,6 +2,8 @@ import { useContext, useState } from 'react'
 import { CurrentUserContext } from '../../context/ContextAPI';
 import { useNavigate, Navigate } from 'react-router-dom';
 import NavigateBackButton from '../page-elements/NavigateBackButton';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
 export default function RegisterPage() {
     const { jwt, login, register, error, loading } = useContext(CurrentUserContext);
@@ -19,7 +21,7 @@ export default function RegisterPage() {
     }
 
     const handleUsernameChange = (event) => {
-        setUsername((event.target.value).trim());
+        setUsername(event.target.value);
     }
 
     const validateUsername = () => {
@@ -36,7 +38,7 @@ export default function RegisterPage() {
     }
 
     const handleEmailChange = (event) => {
-        setEmail((event.target.value).trim());
+        setEmail(event.target.value);
     }
 
     const validateEmail = () => {
@@ -90,9 +92,22 @@ export default function RegisterPage() {
 
     return (
         <div>
-            <form onSubmit={handleSubmitForm} noValidate>
-                <div>
-                    <label htmlFor="username">Username: </label>
+            <Form onSubmit={handleSubmitForm} noValidate>
+                <Form.Group className="mb-3">
+                    <Form.Label>Username</Form.Label>
+                    <Form.Control
+                        type="text"
+                        id="username"
+                        placeholder='Enter username'
+                        value={username}
+                        onBlur={validateUsername}
+                        onChange={handleUsernameChange}
+                        required
+                    />
+                    <Form.Text className="text-muted">
+                        Username must be unique and at least 3 symbols
+                    </Form.Text>
+                    {/* <label htmlFor="username">Username: </label>
                     <input
                         type="text"
                         id="username"
@@ -101,11 +116,24 @@ export default function RegisterPage() {
                         onBlur={validateUsername}
                         onChange={handleUsernameChange}
                         required
-                    />
+                    /> */}
                     {usernameError && <p style={{ color: 'red' }}>{usernameError}</p>}
-                </div>
-                <div>
-                    <label htmlFor="email">Email: </label>
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control
+                        type="email"
+                        id="email"
+                        placeholder='Enter your email'
+                        value={email}
+                        onBlur={validateEmail}
+                        onChange={handleEmailChange}
+                        required
+                    />
+                    <Form.Text className="text-muted">
+                        Email must be unique
+                    </Form.Text>
+                    {/* <label htmlFor="email">Email: </label>
                     <input
                         type="email"
                         id="email"
@@ -114,11 +142,25 @@ export default function RegisterPage() {
                         onBlur={validateEmail}
                         onChange={handleEmailChange}
                         required
-                    />
+                    /> */}
                     {emailError && <p style={{ color: 'red' }}>{emailError}</p>}
-                </div>
-                <div>
-                    <label htmlFor="password">Password: </label>
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control
+                        type="password"
+                        id="password"
+                        placeholder='Enter your password'
+                        value={password}
+                        minLength={8}
+                        onBlur={validatePassword}
+                        onChange={handlePasswordChange}
+                        required
+                    />
+                    <Form.Text className="text-muted">
+                        Password must be at least 8 symbols
+                    </Form.Text>
+                    {/* <label htmlFor="password">Password: </label>
                     <input
                         type="password"
                         id="password"
@@ -128,16 +170,18 @@ export default function RegisterPage() {
                         onBlur={validatePassword}
                         onChange={handlePasswordChange}
                         required
-                    />
+                    /> */}
                     {passwordError && <p style={{ color: 'red' }}>{passwordError}</p>}
-                </div>
-                <button type='submit'>Register</button>
+                </Form.Group>
+                <Button type='submit'>Register</Button>
                 {/**currently not seeing this line at all, default validation works first */}
                 {submitError && <p style={{ color: 'red' }}>{submitError}</p>}
                 {loading && <p style={{ color: 'blue' }}>Loading...</p>}
                 {/* {error && <p style={{ color: 'red' }}>{error.message}</p>} */}
-            </form>
-            <NavigateBackButton/>
+            </Form>
+            <footer className="py-3">
+                <NavigateBackButton />
+            </footer>
         </div>
     )
 }
