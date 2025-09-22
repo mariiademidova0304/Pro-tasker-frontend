@@ -83,6 +83,8 @@ export default function RegisterPage() {
                 } else {
                     setSubmitError('Password or username is invalid');
                 }
+            } else{
+                setSubmitError('Error. Username and email must be unique.')
             }
         } else {
             setSubmitError('Please, check the fields for errors. Username and email must be unique');
@@ -107,16 +109,6 @@ export default function RegisterPage() {
                     <Form.Text className="text-muted">
                         Username must be unique and at least 3 symbols
                     </Form.Text>
-                    {/* <label htmlFor="username">Username: </label>
-                    <input
-                        type="text"
-                        id="username"
-                        placeholder='Username must be unique and at least 3 symbols'
-                        value={username}
-                        onBlur={validateUsername}
-                        onChange={handleUsernameChange}
-                        required
-                    /> */}
                     {usernameError && <p style={{ color: 'red' }}>{usernameError}</p>}
                 </Form.Group>
                 <Form.Group className="mb-3">
@@ -133,16 +125,6 @@ export default function RegisterPage() {
                     <Form.Text className="text-muted">
                         Email must be unique
                     </Form.Text>
-                    {/* <label htmlFor="email">Email: </label>
-                    <input
-                        type="email"
-                        id="email"
-                        placeholder='Email must be unique'
-                        value={email}
-                        onBlur={validateEmail}
-                        onChange={handleEmailChange}
-                        required
-                    /> */}
                     {emailError && <p style={{ color: 'red' }}>{emailError}</p>}
                 </Form.Group>
                 <Form.Group className="mb-3">
@@ -160,17 +142,6 @@ export default function RegisterPage() {
                     <Form.Text className="text-muted">
                         Password must be at least 8 symbols
                     </Form.Text>
-                    {/* <label htmlFor="password">Password: </label>
-                    <input
-                        type="password"
-                        id="password"
-                        placeholder='Password must be at least 8 symbols'
-                        value={password}
-                        minLength={8}
-                        onBlur={validatePassword}
-                        onChange={handlePasswordChange}
-                        required
-                    /> */}
                     {passwordError && <p style={{ color: 'red' }}>{passwordError}</p>}
                 </Form.Group>
                 <Button type='submit'>Register</Button>
