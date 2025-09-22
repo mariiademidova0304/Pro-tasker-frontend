@@ -57,6 +57,7 @@ Route protection
 https://dev.to/vinibgoulart/how-to-protected-a-route-with-jwt-token-in-react-using-context-api-l38
 Setting up editing of elements
 https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Frameworks_libraries/React_interactivity_filtering_conditional_rendering
-
+Deployment issues
+https://answers.netlify.com/t/page-not-found-issue-on-deploying-react-application/77842/2
 
 
