@@ -9,7 +9,7 @@ export default function ProjectList({projects, onDelete}){
     );
 
     return(
-        <ul>
+        <ul style={{ listStyleType: 'none', padding: 0 }}>
             {projectList}
         </ul>
 

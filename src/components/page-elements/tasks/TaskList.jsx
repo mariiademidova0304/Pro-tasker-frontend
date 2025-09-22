@@ -9,7 +9,7 @@ export default function TaskList({tasks, onStatusChange, onDelete, onDetailsChan
     );
 
     return(
-        <ul>
+        <ul style={{ listStyleType: 'none', padding: 0 }}>
             {taskList}
         </ul>
 

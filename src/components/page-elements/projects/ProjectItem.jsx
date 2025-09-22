@@ -1,25 +1,28 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
+import ListGroup from 'react-bootstrap/ListGroup';
 
 
-export default function ProjectItem({project, onDelete}) {
+export default function ProjectItem({ project, onDelete }) {
+    const cardWidth = window.innerWidth * 0.75;
 
-    
     const handleDeleteProject = () => {
         onDelete(project._id);
     }
 
-    return(
-         <main style={{display: 'flex', justifyContent: 'space-between', padding: '10px'}}>
-              <div style={{display: 'flex', flexDirection: 'column', gap: '5px'}}>
-                <Link to={`/dashboard/${project._id}`}>
-                <p>{project.name}</p>
-                </Link>
-                <p>{project.description}</p>
-            </div>
-            <div style={{display: 'flex', justifyContent:'flex-end',height:'fit-content'}}>
-                <button onClick={handleDeleteProject}>Delete</button>
-            </div>
-        </main>
+    return (
+        <Card style={{minWidth: `${cardWidth}`}}>
+            <Card.Body>
+                <Card.Title>
+                    <Link to={`/dashboard/${project._id}`}>
+                        {project.name}
+                    </Link>
+                </Card.Title>
+                <Card.Text>{project.description}</Card.Text>
+                <Button variant="danger" onClick={handleDeleteProject}>Delete</Button>
+            </Card.Body>
+        </Card>
     )
 }

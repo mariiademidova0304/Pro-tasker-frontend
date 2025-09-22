@@ -6,6 +6,8 @@ import { CurrentUserContext } from "../../context/ContextAPI";
 import TaskForm from "../page-elements/tasks/TaskForm";
 import LogoutButton from "../page-elements/LogoutButton";
 import NavigateBackButton from "../page-elements/NavigateBackButton";
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
 
 export default function ProjectDetailsPage() {
     const { projectID } = useParams();
@@ -244,11 +246,13 @@ export default function ProjectDetailsPage() {
                 />
                 <button onClick={handleProjectSave}>Save Changes</button>
                 <button onClick={handleProjectCancel}>Cancel</button>
-            </div>) : (<div>
-                <h1>{editedName}</h1>
-                <p>{editedDescription}</p>
-                <button onClick={() => setEditMode(true)}>Edit Project</button>
-            </div>)}
+            </div>) : (<Card border="primary">
+                <Card.Body>
+                    <Card.Title>{editedName}</Card.Title>
+                    <Card.Text>{editedDescription}</Card.Text>
+                </Card.Body>
+                <Button onClick={() => setEditMode(true)}>Edit Project</Button>
+            </Card>)}
 
             {displayingTasks.length > 0 ? <TaskList tasks={displayingTasks || []}
                 onStatusChange={changeTaskStatus}

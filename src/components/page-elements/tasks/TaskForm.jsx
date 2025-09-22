@@ -97,16 +97,21 @@ export default function TaskForm({ projectId, onTaskSubmitted }) {
 
     return (
         <Form onSubmit={handleSubmit} noValidate>
-            <Form.Group>
-                <label htmlFor="task-title">Task</label>
-                <input value={inputFormData.title} type="text" name="title" id="task-title" onChange={handleChange} required />
+            <Form.Group className="mb-3">
+                <Form.Label>Task</Form.Label>
+                <Form.Control value={inputFormData.title} type="text" name="title" placeholder="Enter task name" onChange={handleChange} required/>
+
+                {/* <label htmlFor="task-title">Task</label>
+                <input value={inputFormData.title} type="text" name="title" id="task-title" onChange={handleChange} required /> */}
             </Form.Group>
             <Form.Group>
-                <label htmlFor="task-description">Description</label>
-                <input value={inputFormData.description} type="text" name="description" id="task-description" onChange={handleChange} required />
+                <Form.Label>Description</Form.Label>
+                <Form.Control value={inputFormData.description} type="text" name="description" placeholder="Enter description" onChange={handleChange} required/>
+                {/* <label htmlFor="task-description">Description</label>
+                <input value={inputFormData.description} type="text" name="description" id="task-description" onChange={handleChange} required /> */}
             </Form.Group>
             <Form.Group>
-                <label htmlFor="select-status">Status</label>
+                <Form.Label>Status</Form.Label>
                 <Form.Select name="status" id="select-status" value={inputFormData.status} onChange={handleChange}>
                     <option value='To do'>To Do</option>
                     <option value='In progress'>In progress</option>
@@ -114,15 +119,17 @@ export default function TaskForm({ projectId, onTaskSubmitted }) {
                 </Form.Select>
             </Form.Group>
             <Form.Group>
-                <label htmlFor="input-date">Due Date</label>
-                <input value={inputFormData.dueDate} type="date" name="dueDate" id="input-date" onChange={handleChange} required />
-                <Button type="submit">Add Task</Button>
+                <Form.Label>Due Date</Form.Label>
+                <Form.Control value={inputFormData.dueDate} type="date" name="dueDate" id="input-date" onChange={handleChange} required/>
+                {/* <label htmlFor="input-date">Due Date</label>
+                <input value={inputFormData.dueDate} type="date" name="dueDate" id="input-date" onChange={handleChange} required /> */}
                 {loading && <p style={{ color: 'blue' }}>Loading...</p>}
                 {error && <p style={{ color: 'red' }}>{error.message}</p>}
                 {titleError && <p style={{ color: 'red' }}>{titleError}</p>}
                 {descriptionError && <p style={{ color: 'red' }}>{descriptionError}</p>}
                 {dueDateError && <p style={{ color: 'red' }}>{dueDateError}</p>}
             </Form.Group>
+            <Button type="submit">Add Task</Button>
         </Form>
     )
 }
