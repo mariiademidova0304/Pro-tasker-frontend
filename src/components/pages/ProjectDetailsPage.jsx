@@ -4,6 +4,7 @@ import TaskList from "../page-elements/tasks/TaskList";
 import { useContext, useEffect, useState } from "react";
 import { CurrentUserContext } from "../../context/ContextAPI";
 import TaskForm from "../page-elements/tasks/TaskForm";
+import LogoutButton from "../LogoutButton";
 
 export default function ProjectDetailsPage() {
     const { projectID } = useParams();
@@ -69,10 +70,27 @@ export default function ProjectDetailsPage() {
         }
     }
 
-    const handleProjectCancel = () => {
-        setEditedName(project.name);
-        setEditedDescription(project.description);
-        setEditMode(false);
+    const handleProjectCancel = async () => {
+        try {
+            const responseUpdProject = await fetch(`${import.meta.env.VITE_SERVER_ORIGIN}/api/projects/${projectID}`,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${jwt}`
+                    }
+                }
+            );
+            if (!responseUpdProject.ok) {
+                throw new Error(`Error! Status: ${response.status}`);
+            }
+            const updProject = await responseUpdProject.json();
+            setEditedName(updProject.name);
+            setEditedDescription(updProject.description);
+            setEditMode(false);
+        } catch (error) {
+            setUpdateError(error);
+            setEditMode(false);
+        }
     }
 
     ////////////////////////////////////TASKS MANIPULATION///////////////////////////////////////
@@ -186,7 +204,7 @@ export default function ProjectDetailsPage() {
     /////////////////REFRESH AFTER SUBMITTING NEW TASKS/////////////////////////////////
     const handleRefreshTasks = async () => {
         setUpdateError(null);
-        try{
+        try {
             const responseUpdTasks = await fetch(`${import.meta.env.VITE_SERVER_ORIGIN}/api/projects/${projectID}/tasks`,
                 {
                     headers: {
@@ -200,14 +218,15 @@ export default function ProjectDetailsPage() {
             }
             const updatedTasks = await responseUpdTasks.json();
             setDisplayingTasks(updatedTasks);
-        } catch(error){
+        } catch (error) {
             setUpdateError(error.message)
-        } 
+        }
     }
 
     return (
         <>
-        <TaskForm projectId={projectID} onTaskSubmitted={handleRefreshTasks}/>
+            <LogoutButton />
+            <TaskForm projectId={projectID} onTaskSubmitted={handleRefreshTasks} />
             {editMode ? (<div>
                 <input
                     type="text"

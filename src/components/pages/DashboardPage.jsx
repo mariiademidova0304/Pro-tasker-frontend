@@ -4,6 +4,7 @@ import ProjectForm from "../page-elements/projects/ProjectForm";
 import ProjectList from "../page-elements/projects/ProjectList";
 import useFetchAPI from "../../utils/useFetchAPI";
 import Button from "react-bootstrap/esm/Button";
+import LogoutButton from "../LogoutButton";
 
 export default function DashBoardPage() {
     const { jwt, logout } = useContext(CurrentUserContext);
@@ -76,11 +77,11 @@ export default function DashBoardPage() {
 
     return (
         <div>
+            <LogoutButton />
             <ProjectForm onProjectSubmit={handleRefresh} />
             <ProjectList projects={displayingProjects || []} onDelete={deleteProject} />
             {refreshError && <p style={{ color: 'red' }}>{refreshError}</p>}
             {deleteError && <p style={{ color: 'red' }}>{deleteError.message}</p>}
-            <Button onClick={() => logout()}>Sign Out</Button>
         </div>
     )
 }
